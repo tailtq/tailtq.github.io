@@ -172,7 +172,7 @@ After we understand our query, we should be able to improve our queries by addin
     - Change the programming rules to reduce the weight for database.
 - ...
 
-In my case, even though the optimizer used a lower-cost and higher `filtered` value index, it has `filesort: true` and the whole query costs ~2 seconds.
+In my case, even though the optimizer used a lower-cost and higher `filtered` value index, it has `filesort: true` so the whole query costs ~2 seconds.
 
 
 ## 4. Conclusion

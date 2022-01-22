@@ -1,85 +1,87 @@
 ---
-title: Phân loại chó mèo bằng Keras
-author: Tai Le
+title: Cat & dog recognition using Keras
 date: 2020-04-26
-tags: [Deep Learning]
+tags: ['Machine Learning', 'Deep Learning', 'Tensorflow', 'Computer Vision']
 ---
 
 ![Cover](/assets/img/2020-04-26/cover.jpg)
 
 ---
 
-Đối với những người mới bắt đầu học Deep Learning và Computer Vision, bài toán nhận diện chó mèo là một vấn đề tương đối trực quan mà mọi người nên thử sức, bên cạnh [nhận diện số viết tay](https://en.wikipedia.org/wiki/MNIST_database).
+For Machine Learning beginners who just know about basic agorithms and want more - get involved in [Computer Vision](https://en.wikipedia.org/wiki/Computer_vision) projects, cat & dog recognition is a fairly straightforward problem that everyone would solve when stepping in Computer Vision area (beside [MNIST](https://en.wikipedia.org/wiki/MNIST_database) - Hand written digits).
 
-Hôm nay, tôi sẽ xây dựng một model để phân loại chó hoặc mèo ở trong một ảnh. Qua bài viết này, tôi hi vọng nó sẽ mang lại cho bạn những khái niệm cơ bản về Deep Learning. Hãy bắt đầu thôi!
+Today I will build a model to classify whether a cat or a dog is in a particular image. I hope it could help you to understand the basic intuition about Computer Vision. So let’s get started now!
 
 
 
-### Tải dữ liệu
+### Download dataset
 
-Đầu tiên, truy cập [Kaggle](https://www.kaggle.com/) bằng đường [link](https://www.kaggle.com/c/dogs-vs-cats/data) này, bạn có thể tìm thấy dữ liệu gồm ảnh của chó và mèo tại đây. Sau đó, bấm vào nút "Download all" để tải tập dữ liệu về (như ảnh dưới).
+First, go to [Kaggle](https://www.kaggle.com/) through this [link](https://www.kaggle.com/c/dogs-vs-cats/data), you will find the cat & dog dataset here.
+
+(For someone who doesn’t know about [Kaggle](https://www.kaggle.com/), it is a platform where you can practice your ML skills. At Kaggle, you will work with real world problems and learn the experiences from other practitioners. After grabbing some specific understanding about Machine Learning, I encourage you to take part in this platform to develop your skill further).
+
+After that, download your dataset by clicking “Download all” button (image below).
 
 ![Download dataset](/assets/img/2020-04-26/download-dataset.png)
 
-(Cho những người chưa biết về Kaggle, đây là một nền tảng phổ biến để bạn có thể thực hành và cải thiện Machine Learning skills. Tại Kaggle, bạn sẽ có cơ hội làm việc với những vấn đề thực tế và được học từ những Data Scientist hoặc Machine Learning Practitioner khác. Sau khi nắm một số khái niệm về Machine Learning, tôi khuyến khích các bạn nên tham gia vào nền tảng này để nâng cao khả năng của mình hơn nữa).
 
 
+### Directory structure
 
-### Cấu trúc thư mục
+I move all downloaded data to dataset folder for importing concisely. And a notebook will also be created in the project level.
 
-Trong bài viết này, chúng ta sẽ dùng `ImageDataGenerator` trong thư viện Keras, đồng thời class này sẽ cần một cấu trúc thư mục chính xác để thực hiện. Vì vậy, tôi cần phải chuyển tất cả các data được tải về vào thư mục có tên `dataset`, sau đó tôi sẽ phân loại các ảnh được huấn luyện theo tên nhãn.
+In this tutorial, we will use `ImageDataGenerator` in Keras library. It needs a correct directory structure when using its method because it will use folder names to indicate the labels. Thus we need to categorize our training images.
 
-Về Jupyter notebook, file này sẽ được tạo ở project level.
-
-Cấu trúc hiện tại sẽ như thế này:
+Current structure looks like this:
 
 ![Current directory structure](/assets/img/2020-04-26/directory-structure.png)
 
-Kì vọng:
+Expectation:
 
 ![Expected directory structure](/assets/img/2020-04-26/directory-structure-2.png)
 
-Ở mục tiếp theo, chúng ta sẽ cùng nhau viết một đoạn python script nho nhỏ để chuyển tất cả hình ảnh vào thư mục tương thích.
+Don’t get nervous, we will write a simple python script to move each image to its respective directory soon.
+
+In the end, our project structure will look like this:
+
+![Expected directory structure](/assets/img/2020-04-26/directory-structure-3.png)
 
 
 
-### Phân loại ảnh huấn luyện
+### Classify our training images
 
 ```python
 import os
 import shutil
 from os.path import isfile, join
 
-# Truy xuất vào thư mục dataset/train
+# Change our location to dataset/train directory
 os.chdir('dataset/train')
 
-# Tạo các thư mục nếu không tồn tại
+# Create directories if not exist
 if not os.path.exists('cat'):
     os.mkdir('cat')
-
+    
 if not os.path.exists('dog'):
     os.mkdir('dog')
 
-# List hết các file, bạn có thể dùng glob
+# List all files
 files = [f for f in os.listdir() if isfile(join(f))]
 
 for file in files:
-    # So sánh tên và sử dụng shutil để chuyển ảnh vào thư mục hợp lệ
+    # Compare file name and use shutil package to move file into matched directory
     if file[0:3] == 'cat':
         shutil.move(file, 'cat')
     else:
         shutil.move(file, 'dog')
 ```
 
-Cuối cùng, cấu trúc dự án của chúng ta sẽ như thế này:
-
-![Expected directory structure](/assets/img/2020-04-26/directory-structure-3.png)
 
 
-
-### Import thư viện và phân tích
+### Import the libraries and analyse
 
 ```python
+# Import libraries
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
@@ -91,9 +93,9 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Dropout, Flatten
 ```
 
-Với 4 dòng đầu tiên, có thể bạn đã quá quen với những thư viện này rồi. Nhưng nếu bạn thắc mắc phần còn lại sẽ thực hiện những gì, tôi sẽ viết một bài chi tiết vào những buổi tiếp theo.
+For the first 4 lines, you probably already knew what these libraries are used for. And if you wonder about what the rest can do, don’t worry, I will explain specifically about each in the next couple of articles.
 
-Chúng ta sẽ hiển thị một ảnh mèo trong tập huấn luyện:
+Then we will plot the first cat in the training set:
 
 ```python
 cat0 = cv2.imread('dataset/train/cat/cat.0.jpg')
@@ -102,9 +104,9 @@ cat0 = cv2.cvtColor(cat0, cv2.COLOR_BGR2RGB)
 plt.imshow(cat0)
 ```
 
-![Cat sample](/assets/img/2020-04-26/image-2.png)
+![Image augmentation](/assets/img/2020-04-26/image-2.png)
 
-Và đây là ảnh chó:
+And also the first dog:
 
 ```python
 dog0 = cv2.imread('dataset/train/dog/dog.0.jpg')
@@ -113,31 +115,36 @@ dog0 = cv2.cvtColor(dog0, cv2.COLOR_BGR2RGB)
 plt.imshow(dog0)
 ```
 
-![Dog sample](/assets/img/2020-04-26/image-1.png)
+![Image augmentation](/assets/img/2020-04-26/image-1.png)
 
 
 
-### Tăng cường dữ liệu
+### Augment the data
 
-Tăng cường dữ liệu (Data augmentation) là một quá trình quan trọng trong những tập dữ liệu nhỏ hoặc không có tính khái quát cao. Vậy kĩ thuật này có ý nghĩa gì khi huấn luyện model? Nó giúp chúng ta tạo ra nhiều biến thể của ảnh để làm tăng tính khái quát của model.
+Data augmentation is an important process involved in the lack of data in small datasets. With a little transformation, we can turn an image to multiple different ones but are still clear enough to be learned by our model.
 
-Tôi xin liệt kê một số phương thức để tăng cường dữ liệu cho ảnh:
-- Dịch chuyển ngang và dọc (Horizontal and Vertical Shift)
-- Lật ngang và dọc (Horizontal and Vertical Flip)
-- Xoay (Rotate)
-- Tăng giảm độ sáng (Adjust brightness)
-- Thu phóng (Zoom)
+I would like to list some methods to enhance data for images:
+- Horizontal and Vertical Shift
+- Horizontal and Vertical Flip
+- Rotate
+- Adjust brightness
+- Zoom in and Zoom out
 - ...
 
- Chúng ta có thể nhìn ảnh của chú sư tử bên dưới:
+We can see an example with our heroic lion below:
 
 ![Image augmentation](/assets/img/2020-04-26/image-augmentation.png)
 
-Bằng kĩ thuật tăng cường dữ liệu này, chúng ta đã có những bức ảnh sư tử với nhiều góc độ khác nhau, điều này giúp model hiểu có thể khái quát được các thuộc tính sư tử khi đang học.
+Characteristics:
+- All of the images are cropped into a rectangle shape
+- The lion in the first transformed image is flipped in the horizontal side.
+- The second one is rotated a bit
+- And so on....
 
-Bây giờ chúng ta sẽ đi vào công đoạn tăng cường dữ liệu bằng Keras.
+Now we will get into the data augmentation process with Keras, which needs fine-tuning and measuring many times to achieve a good result.
 
 ```python
+# Create a generator
 image_gen = ImageDataGenerator(width_shift_range=0.1,
                                height_shift_range=0.1,
                                rescale=1/255,
@@ -149,22 +156,21 @@ image_gen = ImageDataGenerator(width_shift_range=0.1,
 ```
 
 ```python
-# Thử tăng cường dữ liệu với ảnh chú chó chúng ta vừa tạo lúc nãy
+# Let try our generator with dog0
 plt.imshow(image_gen.random_transform(dog0))
 ```
 
 ![Augmented image](/assets/img/2020-04-26/augmented-image-1.png)
 
 ```python
-# Còn đây là ảnh chú mèo sau khi tăng cường
+# Let try our generator with dog0
 plt.imshow(image_gen.random_transform(cat0))
 ```
 
 ![Augmented image](/assets/img/2020-04-26/augmented-image-2.png)
 
-Sau khi tạo `generator`, chúng ta sẽ dùng object này để load image.
-
 ```python
+# Load our training and test data
 directory = 'dataset/train'
 batch_size = 32
 image_shape = (127, 127, 3)
@@ -184,9 +190,9 @@ test_data = image_gen.flow_from_directory(directory,
 
 
 
-### Xây dựng và huấn luyện model
+### Build and train the model
 
-Đây có vẻ như là nhiệm vụ tuyệt vời nhất cho chúng ta. Chúng ta sẽ tạo một model với **8 layer** với lượng filter tăng dần sau vài convolutional layer.
+It is probably the most exciting task for many of you. Now we will create a **8-layers model** with the increasing filters after every couple of conv layer.
 
 ```python
 model = Sequential([
@@ -194,21 +200,21 @@ model = Sequential([
     Conv2D(filters=32, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2, 2)),
     Dropout(0.25),
-
+    
     Conv2D(filters=64, kernel_size=(3,3), padding='same', activation='relu'),
     Conv2D(filters=64, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2, 2)),
     Dropout(0.25),
-
+    
     Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu'),
     Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu'),
     MaxPooling2D(pool_size=(2, 2)),
     Dropout(0.25),
     Flatten(),
-
+    
     Dense(500, activation='relu'),
     Dropout(0.5),
-
+    
     Dense(2, activation='softmax')
 ])
 
@@ -219,9 +225,9 @@ model.compile(loss='categorical_crossentropy',
 model.summary()
 ```
 
-Tóm tắt về model:
+Here is our summary:
 
-![Model summary](/assets/img/2020-04-26/model-summary.png)
+![Model summary](/assets/img/2020-04-26/training-process.png)
 
 ```python
 import warnings
@@ -236,15 +242,15 @@ results = model.fit_generator(train_data,
 
 ![Training process](/assets/img/2020-04-26/augmented-image-2.png)
 
-Sau 25 epoch, hẳn là chúng ta đã khá thoải mái khi model đã đạt được độ chính xác tương đối cao mà không bị `overfit` với tập data huấn luyện. Trong thực tế, nếu chúng ta không sử dụng `pretrained models`, thì chúng ta sẽ cần dành nhiều thời gian hơn để tìm ra kiến trúc phù hợp và tối ưu để giải quyết vấn đề này.
+It is very delightful when our model achieve a quite high accuracy rate. In practice, if we don't use any pre-trained models, we will spend a huge amount of time to figure out the suitable model for this problem.
 
 
 ```python
-# Lưu model để xây dựng app
+# Save our model for building our app
 model.save('model.h5')
 ```
 
-### Phát họa lịch sử huấn luyện
+### Plot the learning history
 
 ```python
 fig, ax = plt.subplots(1, 2, figsize=(15, 15))
@@ -262,6 +268,5 @@ plt.show()
 ![Augmented image](/assets/img/2020-04-26/history.png)
 
 
-
-### Tài liệu
-- [Tăng cường dữ liệu](https://machinelearningmastery.com/how-to-configure-image-data-augmentation-when-training-deep-learning-neural-networks/)
+### Document
+- [Data Augmentation](https://machinelearningmastery.com/how-to-configure-image-data-augmentation-when-training-deep-learning-neural-networks/)
