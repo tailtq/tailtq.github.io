@@ -6,12 +6,12 @@ tags: [Front-end Engineering, Python]
 ---
 
 
-After I switched to the NLP team in my company, I have had many opportunities to research new technologies, both in Web and AI. My leader introduced Streamlit as a Front-end development library, coding entirely in Python, to build a demo for AI's API. After using it for several days, I decided to write a post to summarize the library, list the advantages as well as disadvantages for easily getting back in the future.
+After I switched to the NLP team in my company, I have had many opportunities to research new technologies, both in Web and AI. My leader introduced [Streamlit](https://streamlit.io/) as a Front-end development library, coding entirely in Python, to build a demo for AI's API. After using it for several days, I decided to write a post to summarize the library, list the advantages as well as disadvantages for easily getting back in the future.
 
 
 ## 1. Introduction
 
-Streamlit is a relatively handy library for developers and data scientists to build web applications without prior knowledge about Web Development. Developers and Data Scientists might not need to know HTML, CSS, or JS to build a website. The library has supported plenty of components, and the way to use all of them is simply by calling Python functions.
+[Streamlit](https://streamlit.io/) is a relatively handy library for developers and data scientists to build web applications without prior knowledge about Web Development. Developers and Data Scientists might not need to know HTML, CSS, or JS to build a website. The library has supported plenty of components, and the way to use all of them is simply by calling Python functions.
 
 What I am writing out is quite hard to believe, so I will walk you through some examples using Streamlit. Let's go.
 
@@ -74,7 +74,9 @@ st.dataframe(df[["YEAR", "MOVIE", "DISTRIBUTOR", "TOTAL IN 2019 DOLLARS"]])
 ```
 ![/assets/img/2022-02-18/demo-table.png](/assets/img/2022-02-18/demo-table.png)
 
-Quite simple, isn't it? There are more complex products made from this library as well, such as [Object Labeling Tool](https://github.com/streamlit/demo-self-driving) for Self-Driving Car applications. With these components, you can build various tools without knowing HTML, CSS, and JS.
+Quite simple, isn't it? There are more complex products made from this library as well, such as [Object Labeling Tool](https://github.com/streamlit/demo-self-driving) for Self-Driving Car applications (gif below). So with these components, you can build various tools without knowing HTML, CSS, and JS.
+
+![/assets/img/2022-02-18/complex-app-example.gif](/assets/img/2022-02-18/complex-app-example.gif)
 
 
 #### c. Mechanism:
@@ -100,3 +102,5 @@ IMHO, this library is out of the box for Data Scientists to visualize their data
 But in some ways, Software Engineers might find it inconvenient because it is extremely hard to customize the CSS, JS, and add extra components. New components built are also separated in different iframes. Once I got frustrated when I tried to add a pop-up to Streamlit, then gave up and found another approach to solve the same problem. Adding a class to the HTML might sound easy at first but it's impossible.
 
 So if you want to build a small application using the supported components without customization in style, Streamlit is a great library to use. Otherwise, you should find other libraries code or delve into the Front-end world if possible.
+
+That is the end of the story. I will write more posts like this whenever I learn something new. Thanks for reading.
