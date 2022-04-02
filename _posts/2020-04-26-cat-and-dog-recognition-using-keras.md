@@ -1,7 +1,7 @@
 ---
 title: Cat & dog recognition using Keras
 date: 2020-04-26
-tags: ['Machine Learning', 'Deep Learning', 'Tensorflow', 'Computer Vision']
+tags: ['AI', 'Deep Learning', 'Tensorflow', 'Computer Vision']
 ---
 
 ![Cover](/assets/img/2020-04-26/cover.jpg)

@@ -2,7 +2,7 @@
 title: I Stopped My Machine Learning Journey
 author: Tai Le
 date: 2021-07-25
-tags: [AI Journey]
+tags: [AI]
 ---
 
 After one and a half years of learning and working with Machine Learning, especially Deep Learning, I decided to stop. It is a hard decision in my life. Even though you might have heard the success stories in AI, I feel like it is not for me. Below are my personal thoughts about my journey.

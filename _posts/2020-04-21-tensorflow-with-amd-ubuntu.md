@@ -1,7 +1,7 @@
 ---
 title: Use Tensorflow with AMD GPU on Ubuntu
 date: 2020-04-21
-tags: ['Machine Learning', 'Tensorflow', 'ROCm']
+tags: ['AI', 'Tensorflow', 'ROCm']
 ---
 
 ![Cover](/assets/img/2020-04-21/cover.png)

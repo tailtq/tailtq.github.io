@@ -1289,7 +1289,7 @@ $sidebar-display: "sidebar-display";
 
     .site-subtitle {
       margin-left: 1rem;
-      margin-right: 1rem;
+      margin-right: 0;
     }
 
     .sidebar-bottom {
@@ -1505,7 +1505,7 @@ $sidebar-display: "sidebar-display";
       .site-subtitle {
         @extend %profile-ml;
 
-        word-spacing: 3px;
+        // word-spacing: 3px;
         margin-top: 0.3rem;
       }
 
