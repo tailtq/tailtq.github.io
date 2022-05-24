@@ -5,29 +5,35 @@ date: 2022-04-02
 tags: [Python]
 ---
 
-At some points, we encounter some problems that make our applications tremendously slow. It could be the amount of computation is large, we have to access multiple resources at the time, or too many tasks need to process, etc. As the user quantity grows, unexpected problems can happen. In that stressful time, we have to optimize our code line by line and make sure that the physical resources are efficiently used. Not only optimizing the SQL queries like the suggestion from my previous post, but concurrency is also an irresistible choice that we should choose.
+At some points, we encounter some problems that make our applications tremendously slow. It could be the amount of computation is large, or accessing multiple resources at the time, or too many tasks need to process, etc. As the amount of user grows, unexpected problems can happen. In that stressful time, we have to optimize our code line by line and make sure that the physical resources are efficiently used. Not only optimizing the SQL queries like the suggestion from my previous post, but concurrency and parallelism are also the irresistible choices that we should choose.
 
-As you have read in the title, we will discuss the topics related to concurrency today. I have had an intention to write about multi-threading and multi-processing for a long time. Even though my understanding is limited and most of the information here is gathered across the Internet, I hope that you guys can enjoy it.
+As you have read in the title, we will discuss the topics related to concurrency and parallelism today. I have had an intention to write about these topics for a long time but procrastinating until now. I hope that you guys can enjoy this post.
+
+![/assets/img/2022-04-02/concurrency-parallelism.jpg](/assets/img/2022-04-02/concurrency-parallelism.jpg)
+_Retrieved from Baeldung_
 
 ## 1. Multi-threading
 
+![/assets/img/2022-04-02/thread.jpg](/assets/img/2022-04-02/thread.jpg)
+_Retrieved from Toptal_
+
 #### a. Example
 
-When we have a large task needs much time to run such as downloading 200 files from S3 to your server per call, and the technology used doesn't support downloading a whole directory (such as Boto3). The easiest and most thoughtless way to do is to retrieve all the files in that directory, loop through them, and download them in order. But that whole process needs to call 200 HTTP requests to S3, assuming that 1 request costs 5 seconds, so we have to wait over 15 minutes to get all the files. Are there any other approaches to improve this task rather than using awscli?
+When we have a large task needs much time to run such as downloading 200 files from S3 to your server per call, and the technology used doesn't support downloading a whole directory (such as Boto3). The naivest way is retrieving all the files in that directory, loopping through them, then downloading them in order. But that whole process needs to call 200 HTTP requests to S3 subsequently (assuming that 5 seconds/request), so we have to wait over 15 minutes to get all the files. Are there any other approaches to improve this task beside using _awscli_?
 
-Fortunately, multi-threading can solve this problem quick and easy. Rather than having a main thread waiting 2000 times, why don't we create 200 threads and wait one time?
+Fortunately, multi-threading can solve this problem quick and easy. Rather than having a main thread waiting 200 times, why don't we create 200 threads and wait one time?
 
 #### b. Definition
 
-**Multi-threading** is the ability to split a big I/O bound task into multiple smaller and independent tasks and handle them **concurrently**. Subthreads can run on different CPUs but only one can execute at a time due to Global Interpreter Clock (GIC) mechanism, then the interpreter runs context switching to do another task. So tasks waiting for external events are the appropriate candidate for this kind of processing.
+**Multi-threading** is the ability to split a big I/O bound task into multiple smaller and independent tasks and handle them **concurrently**. Threads can run on different CPUs but only one can control the interpreter at a time due to Global Interpreter Clock (GIC), then the context switching mechanism switches to another thread. Therefore, tasks waiting for external events are the appropriate candidate for this kind of processing.
 
 **Questions:**
 
-- **Why call it concurrent but only one thread executes at a time?** Once a thread has its turn to execute (context switching is very fast), it runs the instructions then waits for the outcome of an external event. It is called concurrent due to the actions of waiting run in the same time.
+- **Why call it concurrent but only one thread is executed at a time?** Once a thread has its turn to execute (context switching is very fast), it runs the instructions then waits for the outcome of an external event. It is called concurrent due to the actions of waiting run in the same time.
 
-- **What are race conditions in multi-threading?** Race conditions occur when multiple threads access the same resource simultaneously. If undesirable events happen like thread A writes the data after thread B, the system can handle inconsistently.
+- **What are race conditions in multi-threading?** Race conditions occur when multiple threads access the same resource simultaneously. If undesirable events happen like thread A modifies the data while thread B is using it, the result can be unpredictable.
 
-- **Why do race conditions happen when one threads execute at a time?** Because we have no idea which thread will execute first, so race conditions still happen.
+- **Why do race conditions happen when only one thread executes at a time?** Context switching can interupt execution at any point, so the data can be potentially modified by multiple threads.
 
 #### c. How to use?
 
@@ -76,6 +82,7 @@ main()
 # Output:
 # Done creating threads: 0.00s
 # Total time: 5.01s
+# Remember the time could be even longer due to limited network bandwidth
 ```
 
 #### d. Advantages
@@ -83,20 +90,25 @@ main()
 - Cut down the waiting time of non-computational tasks.
 - Shared memory (multiple threads use the same memory space), so any changes can be utilized in other threads.
 - Use physical resource more efficiently.
-- Improve performance and concurrency.
-- Reduce number of required servers.
+- Improve system performance.
 - Write code in a more structured way.
 
 #### e. Disadvantages
 
-- Race conditions.
+- Race conditions (This one deserves another post).
 - Difficult to debug.
+- Too many concurrent threads can result in severely degraded performance.
 
 ## 2. Multi-processing
 
+![/assets/img/2022-04-02/process.jpg](/assets/img/2022-04-02/process.jpg)
+_Retrieved from Toptal_
+
 #### a. Definition
 
-**Multi-processing** is partially like multi-threading, but it creates new processes instead of new threads, these processes run in **parallel** and are not managed by GIL. By not being controlled by GIL, all CPU cores will be fully utilized at the same time. Multi-processing is suitable in running CPU bound tasks _(adding, substracting, multiplying, and dividing,...)_ due to the availability of CPU cores.
+**Multi-processing** is partially like multi-threading, but it creates new processes instead of new threads, these processes run in **parallel** and are not managed by GIL. By not being controlled by GIL, all CPU cores will be fully utilized at the same time. Multi-processing is suitable in running CPU bound tasks _(adding, substracting, multiplying, and dividing,...)_ due to the availability of CPU cores. One process will have its memory space. It means data from one process cannot be shared to another one.
+
+**Personal experience:** A few months ago, I implemented a caching library for a service in my company. Unfortunately, the cache object could not be shared across processes, that problem happened due to Gunicorn run 4 Django processes on the Dev server. So I had to find another library to store cached data in disk. This is a painful and memorable experience to me.
 
 #### b. How to use?
 
@@ -108,7 +120,7 @@ def main():
     processes = []
 
     for _ in range(5):
-        process = Process(target=download_large_file)
+        process = Process(target=do_heavy_computational_task)
         process.start()
         processes.append(process)
 
@@ -120,10 +132,22 @@ def main():
     print("Total time: %.2fs" % (time.time() - start_time))
 ```
 
-#### c. Advantages (same as multi-threading)
+#### c. Advantages
+
+- Racing conditions will not happen in multiprocessing.
+- Multiple CPU cores can be fully utilized.
+- Use physical resource more efficiently.
+- Improve system performance.
+- Write code in a more structured way.
 
 #### d. Disadvantages
 
 - Memory of each process is separated from another, it cannot be shared.
 - A process takes a longer time to initialize than a thread.
 - Difficult to debug.
+- Too many processes can result in severely degraded performance.
+
+## 3. References
+
+- [Concurrency vs Parallelism](https://www.baeldung.com/cs/concurrency-vs-parallelism)
+- [Python Multithreading and Multiprocessing Tutorial](https://www.toptal.com/python/beginners-guide-to-concurrency-and-parallelism-in-python)
