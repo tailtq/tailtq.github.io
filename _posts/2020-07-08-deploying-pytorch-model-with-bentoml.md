@@ -2,7 +2,7 @@
 title: BentoML - Tích hợp và triển khai PyTorch model ở local
 author: Tai Le
 date: 2020-07-08
-tags: [Deep Learning, DevOps]
+tags: [Python, AI, DevOps]
 ---
 
 

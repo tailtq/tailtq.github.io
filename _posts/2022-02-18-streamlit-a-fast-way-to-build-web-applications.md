@@ -2,7 +2,7 @@
 title: Streamlit - A Fast Way to Build Web Applications
 author: Tai Le
 date: 2022-02-18
-tags: [Front-end, Python]
+tags: [Python, Front-end]
 ---
 
 

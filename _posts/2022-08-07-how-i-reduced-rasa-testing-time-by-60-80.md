@@ -2,7 +2,7 @@
 title: How I reduced RASA testing time by 60-80%
 author: Tai Le
 date: 2022-08-06
-tags: [Python, Back-end, AI, NLP]
+tags: [Python, Back-end, AI]
 ---
 
 It is quite a long time since I wrote my latest post, and now I come back stronger with a topic that contains both Back-end and AI. It is my journey to customize the Natural Language Understanding (NLU) testing process of the RASA platform to reduce the computation time. In other words, I applied **batch prediction** in the testing phase, which is currently not available in the pipeline. This post is probably long because I will list things that I modified, so please be patient and follow it until the end.

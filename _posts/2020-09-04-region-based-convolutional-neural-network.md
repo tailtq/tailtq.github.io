@@ -2,7 +2,7 @@
 title: R-CNN - Region-based Convolutional Neural Network
 author: Tai Le
 date: 2020-09-04
-tags: [Deep Learning]
+tags: [AI]
 ---
 
 ![Cover](/assets/img/2020-09-04/rcnn-architecture.png)
