@@ -43,7 +43,7 @@ async def get_eval_data(processor: MessageProcessor, test_data: TrainingData) ->
 		"""
     https://github.com/RasaHQ/rasa/blob/3.1.x/rasa/nlu/test.py#L1246-L1342
     """
-		# measure time
+	# measure time
     start_time = time.time()
 
     ...
@@ -55,9 +55,9 @@ async def get_eval_data(processor: MessageProcessor, test_data: TrainingData) ->
     # End change
 
     for i, result in enumerate(results):
-				# access to the example using the index
+		# access to the example using the index
         example = test_data.nlu_examples[i]
-				...
+		...
 ```
 
 #### b. rasa.core.processor.MessageProcessor.parse_message
@@ -164,7 +164,7 @@ def DIETClassifier_process(self, messages: List[Message]) -> TrainingData:
     start_time = time.time()
     # TODO: Chunk messages into multiple smaller chunks with BATCH_SIZE = 256
     global BATCH_SIZE
-		# create RasaModelData just like what _predict does
+	# create RasaModelData just like what _predict does
     model_data = self._create_model_data(messages, training=False)
     if model_data.is_empty():
         return messages
