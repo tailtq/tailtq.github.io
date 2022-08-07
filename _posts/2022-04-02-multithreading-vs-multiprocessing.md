@@ -2,7 +2,7 @@
 title: Multi-threading vs Multi-processing
 author: Tai Le
 date: 2022-04-02
-tags: [Python]
+tags: [Python, Back-end]
 ---
 
 At some points, we encounter some problems that make our applications tremendously slow. It could be the amount of computation is large, or accessing multiple resources at the time, or too many tasks need to process, etc. As the amount of user grows, unexpected problems can happen. In that stressful time, we have to optimize our code line by line and make sure that the physical resources are efficiently used. Not only optimizing the SQL queries like the suggestion from my previous post, but concurrency and parallelism are also the irresistible choices that we should choose.
