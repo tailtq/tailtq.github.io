@@ -3,7 +3,7 @@ title: Residual Neural Network
 author: Tai Le
 date: 2021-05-14
 math: true
-tags: [Deep Learning]
+tags: [AI]
 ---
 
 ## 1. Problems

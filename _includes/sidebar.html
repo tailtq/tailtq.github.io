@@ -5,6 +5,21 @@
 <div id="sidebar" class="d-flex flex-column align-items-end">
 
   <div class="profile-wrapper text-right">
+    <div id="avatar">
+      <a href="{{ '/' | relative_url }}" alt="avatar">
+        {% capture avatar_url %}
+          {%- if site.avatar contains '://' -%}
+            {{ site.avatar }}
+          {%- elsif site.img_cdn != '' and site.img_cdn -%}
+            {{ site.avatar | prepend: site.img_cdn }}
+          {%- else -%}
+            {{ site.avatar | relative_url }}
+          {%- endif -%}
+        {% endcapture %}
+        <img src="{{ avatar_url }}" alt="avatar" onerror="this.style.display='none'">
+      </a>
+    </div>
+
     <div class="site-title mt-3">
       <a href="{{ '/' | relative_url }}">{{- site.title  -}}</a>
     </div>
@@ -30,6 +45,18 @@
       </a>
     </li> <!-- .nav-item -->
     {% endfor %}
+
+    <li class="nav-item">
+      <a href="https://github.com/tailtq" class="nav-link" target="_blank">
+        <span>GitHub</span>
+      </a>
+    </li> <!-- .nav-item -->
+
+    <li class="nav-item}">
+      <a href="https://www.linkedin.com/in/tai-le-05124a187/" class="nav-link" target="_blank">
+        <span>Linkedin</span>
+      </a>
+    </li> <!-- .nav-item -->
 
   </ul> <!-- ul.nav.flex-column -->
 

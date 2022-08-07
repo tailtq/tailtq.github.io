@@ -3,7 +3,7 @@ title: Fast R-CNN cho nhận diện đối tượng
 author: Tai Le
 date: 2020-09-14
 math: true
-tags: [Deep Learning]
+tags: [AI]
 ---
 
 Sau khi đã tìm hiểu về R-CNN, chúng ta hãy cùng đi tìm hiểu về một kiến trúc tối tân hơn R-CNN vào năm 2015, chỉ 1 năm sau sự ra đời của nó, đó chính là Fast R-CNN. Fast R-CNN là một phiên bản hoàn thiện hơn và khắc phục được các hạn chế mà R-CNN còn mắc phải.
