@@ -2,7 +2,7 @@
 title: File Encryption with GPG
 author: Tai Le
 date: 2021-10-12
-tags: [Back-end Engineering]
+tags: [Back-end]
 ---
 
 A week ago, I had a task related to file encryption, the only technology available was GnuPrivacy Guard (GPG) so I took a day to research it. So today I want to summarize what I have learned from this topic.

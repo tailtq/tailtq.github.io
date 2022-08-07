@@ -2,7 +2,7 @@
 title: MySQL Explain JSON
 author: Tai Le
 date: 2021-12-25
-tags: [Back-end Engineering, Database, MySQL]
+tags: [Back-end, Database, MySQL]
 ---
 
 Asides from the tasks that my team is working on in my company, I am also supporting a software architect to find some solutions to optimize the slow SQL queries in several functionalities. And now I will share the experience that I have learned while working on this task.
