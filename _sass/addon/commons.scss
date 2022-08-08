@@ -1482,8 +1482,8 @@ $sidebar-display: "sidebar-display";
         @extend %profile-ml;
 
         > a {
-          width: 6.2rem;
-          height: 6.2rem;
+          // width: 6.2rem;
+          // height: 6.2rem;
           &.mx-auto {
             margin-right: 0 !important;
           }
