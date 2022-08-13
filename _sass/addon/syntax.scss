@@ -154,6 +154,10 @@ div {
   }
 }
 
+.highlighter-rouge {
+  color: var(--rouge-color);
+}
+
 div[class^='language-']::before {
   content: attr(lang);
   position: absolute;
