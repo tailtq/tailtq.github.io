@@ -177,10 +177,10 @@ def DIETClassifier_process(self, messages: List[Message]) -> TrainingData:
     total_messages = 0
     while True:
         try:
-            # TODO: pass batch of data to model.run_inference function and do post-processing here to
+            # TODO: pass batch of data to model.run_inference2 function and do post-processing here to
             #  ignore the result concatenation (if not, the concatenation will be handle in RasaModel_run_inference)
             batch = next(data_iterator)
-            out = self.model.run_inference(batch)
+            out = self.model.run_inference2(batch)
             total_messages += len(out["diagnostic_data"]["attention_weights"])
 
             # TODO: post-processing
@@ -233,7 +233,8 @@ test.get_eval_data = get_eval_data
 MessageProcessor.parse_message = parse_message
 MessageProcessor._parse_message_with_graph = _parse_message_with_graph
 DIETClassifier.process = DIETClassifier_process
-RasaModel.run_inference = RasaModel_run_inference
+# run_inference will be used when starting the model, so we shouldn't monkey-patch it.
+RasaModel.run_inference2 = RasaModel_run_inference
 ```
 
 ## 3. ConveRTFeaturizer
