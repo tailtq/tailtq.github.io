@@ -16,7 +16,7 @@ No more further instruction, let’s get started!
 
 
 
-### Install ROCm on Ubuntu
+## 1. Install ROCm on Ubuntu
 
 1. Run the following code to ensure that your system is up to date:
 ```bash
@@ -65,13 +65,13 @@ echo 'export PATH=$PATH:/opt/rocm/bin:/opt/rocm/profiler/bin:/opt/rocm/opencl/bi
 
 
 
-### Install Docker
+## 2. Install Docker
 
 There are a ton of instruction in the Internet, but I recommend you to follow the steps which were written in this [article](https://do.co/2zcd8NI).
 
 
 
-### Setup Tensorflow with ROCm
+## 3. Setup Tensorflow with ROCm
 
 1. Pull Tensorflow image (make sure your Docker is running):
 ```bash
@@ -108,7 +108,7 @@ jupyter notebook --allow-root
 
 ![Create notebook](/assets/img/2020-04-21/image-2.png)
 
-### Run Tensorflow
+## 4. Run Tensorflow
 
 In this tutorial, we will use Python to test our ROCm. (For someone who doens't know Python, I encourage you to take some crash courses on the Internet).
 
@@ -190,7 +190,7 @@ model.evaluate(X_test, y_cat_test)
 model.save('model.h5')
 ```
 
-### Summary
+## 5. Summary
 
 After going through various steps, we have our running Tensorflow in AMD GPU. It is worth for spending our time on doing this setup instead of wasting a ton of hours training without ROCm.
 
@@ -202,7 +202,7 @@ So, with weak cards, I think using Google Colab will be much more effective (11 
 
 Thank you for reading this article and keep researching :D.
 
-### References:
+## 6. References
 - [My source code](https://github.com/tailtq/ml-learning/blob/master/handmade-products/digit-recognition/model.ipynb)
 - [Set up ROCm](https://rocm-documentation.readthedocs.io/en/latest/Installation_Guide/Installation-Guide.html)
 - [Cover and also useful article](https://towardsdatascience.com/train-neural-networks-using-amd-gpus-and-keras-37189c453878)

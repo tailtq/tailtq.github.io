@@ -209,6 +209,4 @@ Test:
 
 ## 3. Conclusion
 
-Recently, I have modified quite a lot libraries to add more features and improve performance. Luckily, the approach I used is time-effective and doesn't require a huge effort. It has some drawbacks which are not understanding the technology deeply and sometimes wearing away our patience. In this case, even though I performed the task pretty well, I don't have the knowledge to write a simple function, let alone building servers, ... 
-
-Therefore, if you need to use any technology in the long-term, consider delving in-depth.
+Recently, I have modified quite a lot libraries to add more features and improve performance. Luckily, the approach I used is time-effective and doesn't require a huge effort. It has some drawbacks which are not understanding the technology deeply and sometimes wearing away our patience. In this case, even though I performed the task pretty well, I don't have the knowledge to write a simple function, let alone building servers, ... Therefore, if you need to use any technology in the long-term, consider delving in-depth.
