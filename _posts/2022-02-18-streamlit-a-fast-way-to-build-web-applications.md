@@ -58,6 +58,10 @@ with st.form(key="my_form"):
         st.write(f"**Gender**: {gender}")
         st.write(f"**Introduction**: {introduction}")
 ```
+```shell
+# Run the file
+streamlit run file_name.py
+```
 ![/assets/img/2022-02-18/demo-form.png](/assets/img/2022-02-18/demo-form.png)
 
 
