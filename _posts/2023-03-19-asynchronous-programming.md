@@ -7,17 +7,17 @@ tags: [Python, Back-end]
 
 ![Untitled](/assets/img/2023-03-19/asyncio-header.png)
 
-It’s been such a long time since when I wrote my last post. To be honest, I have been quite lazy from the Tet holiday up until now, with no motivation to get personal tasks done. I’m still in my head a lot 😂.
+It has been a long time since I wrote my last post. To be honest, I have been quite lazy since Tet holiday and lacked the motivation to complete personal tasks. I'm still in my own head a lot 😂.
 
-Fortunately, I’ve made up my mind to continue learning and sharing, and the topic today is **Asynchronous Programming in Python**. This topic was really popular at the time NodeJS was released and many languages have tried to apply this feature. This is also one of the foremost concepts in server-side development that our engineers need to understand.
+Fortunately, I have made up my mind to continue learning and sharing, and the topic today is **Asynchronous Programming in Python**. This topic became popular with the release of NodeJS and many languages have tried to apply this feature. It is also one of the foremost concepts in server-side development that our engineers need to understand.
 
-So please enjoy and provide feedback *(to my email)* if there is any mistake in the post, thanks.
+Please enjoy and provide feedback *(to my email)* if there are any mistakes in the post, thanks.
 
 ## Asynchronous Programming
 
-Before tackling this concept, we should at least have a solid understanding of synchronous programming. **Synchronous programming** is the traditional way in which instructions are executed — from top to bottom — and each instruction must be done before running the next.
+Before tackling this concept, we should have a solid understanding of synchronous programming. **Synchronous programming** is the traditional way in which instructions are executed, from top to bottom, and each instruction must be done before running the next.
 
-For example, we are building a crawler and it needs to crawl from 3 sites, so we need to execute 3 request calls sequentially like the code below:
+For example, if we are building a crawler and it needs to crawl 3 sites, we need to execute 3 request calls sequentially like the code below:
 
 ```python
 import requests
@@ -32,47 +32,47 @@ res = requests.get("https://site3.com")
 print(f"Content of site 3: {res.content}")
 ```
 
-By using synchronous programming, the third request only executes after the second request is done, and the second request only executes after the first request is done. Assuming each request takes 3s to complete, the process run in 9s.
+By using synchronous programming, the third request only executes after the second request is done, and the second request only executes after the first request is done. Assuming each request takes 3 seconds to complete, the process runs in 9 seconds.
 
-This whole process causes slowness because it depends on the third parties; if the third party is slower, the process will wait a longer time. To minimize the waiting time, it’s ideal if 3 requests could execute simultaneously and return the response at once because the requests don’t rely on each other. Here’s why asynchronous programming comes in handy.
+This whole process causes slowness because it depends on the third parties; if the third party is slower, the process will wait longer. It's ideal if 3 requests could execute simultaneously and return the response at once because the requests don't rely on each other. Here's where asynchronous programming comes in handy.
 
 ![Untitled](/assets/img/2023-03-19/sync-async-requests.png)
 
 Instead of waiting to return the response directly, asynchronous I/O delays the execution and returns a **Future** (Python)/**Promise** (JavaScript) as an execution proof without blocking the thread and continuing to invoke other requests. To be clear, asynchrony still goes through the instructions from top to bottom, it just delays the execution and returns another form of the result directly.
 
-In the example, after sending all requests, these Futures will be constantly checked until the responses are available. As you can imagine, 3 crawling requests run simultaneously without waiting for one after another. So the whole only takes around 3s to complete, it’s 3 times faster.
+In the example, after sending all requests, these Futures will be constantly checked until the responses are available. As you can imagine, 3 crawling requests run simultaneously without waiting for one after another. So the whole process only takes around 3 seconds to complete, which is 3 times faster.
 
-But does this sounds familiar with threading? Don’t worry, we will go through how it runs and compare them in the next section.
+But does this sound familiar with threading? Don’t worry, we will go through how it runs and compare them in the next section.
 
 
 ## Asynchronous Programming in Python
 
-Python began supporting asynchronous programming a long long time ago with `gevent`, in version 3.4 which first introduced the Asyncio package - the core for asynchronous programming - and version 3.5 introduced `async/await` keywords.
+Python began supporting asynchronous programming a long time ago with `gevent`, in version 3.4 which first introduced the Asyncio package - the core for asynchronous programming - and version 3.5 introduced `async/await` keywords.
 
 *Note: Async I/O is different from the Asyncio package. The package supports running Async I/O in Python.*
 
-Async I/O is a single-threaded and single-process design, it uses cooperative multitasking to handle a large number of I/O operations like database queries and third-party requests. This design boosts the performance of handling I/O operations significantly, which is very relevant in this era where many computational-intensive tasks are handled by service providers effectively.
+Async I/O is a single-threaded and single-process design. It uses cooperative multitasking to handle a large number of I/O operations like database queries and third-party requests. This design boosts the performance of handling I/O operations significantly, which is very relevant in this era where many computational-intensive tasks are handled by service providers effectively.
 
 
 ### Coroutine/Future/Task
 
-Async I/O begins with defining `async` functions. Each function defined with the `async` keyword is called a **coroutine;** when the coroutine executes, it returns a **future** representing the eventual result of an asynchronous operation.
+Async I/O begins with defining `async` functions. Each function defined with the `async` keyword is called a **coroutine**; when the coroutine executes, it returns a **future** representing the eventual result of an asynchronous operation.
 
-> C*oroutines are a more generalized form of subroutines. Subroutines are entered at one point and exited at another point. Coroutines can be entered, exited, and resumed at many different points —* **(Python Glossary)**
-> 
+> Coroutines are a more generalized form of subroutines. Subroutines are entered at one point and exited at another point. Coroutines can be entered, exited, and resumed at many different points. — (Python Glossary)
+>
 
 This whole process is running in the Event Loop, which we will address later, where coroutines are executed using **tasks.** A Task, to be specific, is a sub-class of Future that runs a Python coroutine.
 
-**Asynchronous I/O Flow:** When executing a long-running coroutine, Python first creates a task and runs the coroutine within the task in the context of the Event Loop. In the document of Python, it says: “If a coroutine awaits on a Future, the Task suspends the execution of the coroutine and waits for the completion of the Future. When the Future is *done*, the execution of the wrapped coroutine resumes (**callback**)” (”AsyncIO Task”, n.d.).
+**Asynchronous I/O Flow:** When executing a long-running coroutine, Python first creates a task and runs the coroutine within the task in the context of the Event Loop. In the document of Python, it says: “If a coroutine awaits on a Future, the Task suspends the execution of the coroutine and waits for the completion of the Future. When the Future is *done*, the execution of the wrapped coroutine resumes (**callback**)” (“AsyncIO Task”, n.d.).
 
 
 ### Event Loop
 
-As I mentioned above, an Event Loop is where all of the work happens, it can also be called the core of asynchronous operations in every asynchronous platform.
+As I mentioned above, an Event Loop is where all of the work happens. It can also be called the core of asynchronous operations in every asynchronous platform.
 
 ![event_loop2.webp](/assets/img/2023-03-19/event-loop2.jpg)
 
-When a Task is registered (executed), it will be put into a **Task Queue**, the loop will traverse through each item and execute them one at a time. And while the Task awaits the completion of a Future (using `await` keyword), the loop runs other Tasks, callbacks, or performs I/O operations (”Coroutine and Tasks”).
+When a Task is registered (executed), it will be put into a **Task Queue**, the loop will traverse through each item and execute them one at a time. While the Task awaits the completion of a Future (using `await` keyword), the loop runs other Tasks, callbacks, or performs I/O operations (“Coroutine and Tasks”).
 
 *Note: The Event Loop runs on the main thread and executes Tasks sequentially.*
 
@@ -116,7 +116,7 @@ event_loop = events.new_event_loop()
 event_loop.run_until_complete(test())
 ```
 
-We can also run a coroutine in the background before actually awaiting it, calling a coroutine alone is not enough because a warning is shown immediately `RuntimeWarning: coroutine 'test' was never awaited`. As you can see below, the Task is already finished even before awaiting it. It also doesn’t show any warning either.
+We can also run a coroutine in the background before actually awaiting it. Calling a coroutine alone is not enough because a warning is shown immediately `RuntimeWarning: coroutine 'test' was never awaited`. As you can see below, the Task is already finished even before awaiting it. It also doesn’t show any warning.
 
 ```python
 import asyncio
@@ -202,7 +202,7 @@ asyncio.run(run_asynchronous_code_asyncio())
 # [<Response [200]>, <Response [200]>, <Response [200]>]
 # End: 11.448019981384277
 # Average response time: 3.816006660461426
-# 
+#
 # run_asynchronous_code_gevent
 # [<Response [200]>, <Response [200]>, <Response [200]>]
 # End: 4.113437175750732
@@ -285,7 +285,7 @@ As you can see, using asynchrony will benefit the system in multiple aspects, su
 
 After the post, will you still stick with threads and processes or use coroutines? Personally, it depends on the situation that we face. If the task is computationally expensive, using coroutines is not the right approach.
 
-Anyway, hope you enjoy this post, please don’t forget to send me feedback if anything in this content is incorrect or bugs you so much. I will try my best to write more blog posts like this in the future. 
+Anyway, hope you enjoy this post, please don’t forget to send me feedback if anything in this content is incorrect or bugs you so much. I will try my best to write more blog posts like this in the future.
 
 
 ## References
